@@ -34,17 +34,18 @@
                 </ul>
               </div><br><br>
               <section id="formulario">
-                <form method="GET" action="pregrado.html">
+                <form>
                   <div class="form-group">
                     <label for="exampleInputEmail1">Número de cuenta</label>
-                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Ingrese su número de cuenta" required>
+                    <input type="text" class="form-control" id="numeroCuenta" aria-describedby="emailHelp" placeholder="Ingrese su número de cuenta" required>
                   </div><br>
                   <div class="form-group">
                     <label for="exampleInputPassword1">Contraseña</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Ingrese su contraseña" required>
+                    <input type="password" class="form-control" id="contrasenaAlumno" placeholder="Ingrese su contraseña" required>
                   </div>
-                  <button type="submit" class="btn btn-download">Ingresar</button>
+                  <button type="submit" id="btnIngresarA" class="btn btn-download">Ingresar</button>
                 </form> 
+                <div id="mensaje"></div>
               </section>  <br> 
             </div>
           </nav>
@@ -67,7 +68,7 @@
   <script src="js/wow.js"></script>
   <script src="js/jquery.bxslider.min.js"></script>
   <script src="js/custom.js"></script>
-  <script src="contactform/contactform.js"></script>
+  <script src="js/controlador.js"></script>
 
 </body>
 </html>

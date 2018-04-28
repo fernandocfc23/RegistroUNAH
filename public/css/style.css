@@ -7,6 +7,7 @@ body {
   font-weight: 300;
   letter-spacing: 0.5px;
   overflow-x: hidden;
+  background-image:"../img/port05.jpg";
 }
 
 label
@@ -14,9 +15,16 @@ label
   color: yellow
 }
 
-#CerrarSesion{
+#mensaje span
+{
+  color: red;
+}
+
+#datos
+{
   float: right;
-  clear: left;
+  padding: 15px;
+  clear: both;
 }
 
 #formulario

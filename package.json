@@ -9,7 +9,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cookie-parser": "^1.4.3",
+    "datatables.net": "^1.10.16",
+    "datatables.net-dt": "^1.10.16",
     "express": "^4.16.3",
+    "express-session": "^1.15.6",
+    "mysql": "^2.15.0",
     "nodemon": "^1.17.3"
   }
 }
