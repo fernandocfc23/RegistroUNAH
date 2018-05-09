@@ -17,3 +17,14 @@ $(document).ready(function(){
 	});
 
 });
+
+$("#btnSalir").click(function(){	
+	$.ajax({
+		url:"/logout",
+		method:"POST",
+		success:function(respuesta){
+			location.href = "../index.html";
+		}
+	});
+});
+

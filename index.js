@@ -1,21 +1,14 @@
 var express = require("express");
 var app = express();
 var mysql = require("mysql");
-var fs = require("fs");
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
-var session = require('express-session');
 
 app.use(express.static("public"));
 app.use(cookieParser());
 
 app.use(bodyParser.json()); 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(session({
-    secret: 'keyboard cat',
-    resave: false,
-    saveUninitialized: true
-}))
 
 var conexion = mysql.createConnection({
 	user:"root",
