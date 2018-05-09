@@ -5,11 +5,12 @@ $(document).ready(function(){
 	        dataSrc: ''
 	    },
     "columns": [
-        { "data": "codigoHistorial" },
-        { "data": "codigoAlumno" },
-        { "data": "codigoSeccion" },
-        { "data": "codigoPeriodo" },
-        { "data": "promedio" }    ]
+        { "data": "CODIGO_ASIGNATURA" },
+        { "data": "NOMBRE_ASIGNATURA" },
+        { "data": "CANTIDAD_UNIDADES_VALORATIVAS" },
+        { "data": "HORA_INICIO" },
+        { "data": "NOMBRE_PERIODO" },
+        { "data": "PROMEDIO" }    ]
 	} );
 });
 

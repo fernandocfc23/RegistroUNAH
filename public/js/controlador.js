@@ -9,14 +9,13 @@ function guardarRegistro(){
 		method:"POST",
 		data:parametros,
 		success:function(respuesta){
-			console.log("El servidor responde con esto: ");
 			console.log(respuesta);
 		}
 	});
 }
 
 $("#btnIngresarA").click(function(){	
-	var parametros = 
+	var parametros =
 	"numeroCuenta=" +$("#numeroCuenta").val()+ "&"+
 	"contrasenaAlumno=" +$("#contrasenaAlumno").val();
 	$.ajax({
@@ -38,3 +37,28 @@ $("#btnIngresarA").click(function(){
 	});
 
 });
+
+$("#btnIngresarE").click(function(){	
+	var parametros =
+	"numeroEmpleado=" +$("#numeroEmpleado").val()+ "&"+
+	"contrasena=" +$("#contrasena").val();
+	$.ajax({
+		url:"/comprobar-empleado",
+		method:"POST",
+		data:parametros,
+		success:function(respuesta){
+			if(respuesta.length==0)	
+			{
+				var contenido;
+				contenido="<span>error</span>"
+				$("#mensaje").append(contenido);
+			}
+			if(respuesta.length==1)	
+			{
+		    	location.href = "../paneldoc.html";
+			}
+		}
+	});
+
+});
+

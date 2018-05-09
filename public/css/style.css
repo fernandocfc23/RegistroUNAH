@@ -10,6 +10,39 @@ body {
   background-image:"../img/port05.jpg";
 }
 
+#matriculaColumna{
+  width: 25%;
+  margin-right: 2%;
+  margin-left: 2%;
+  float: left;
+}
+#matriculaColumna2{
+  width: 25%;
+  margin: auto;
+}
+#matriculaColumna3{
+  width: 25%;
+  margin-right: 2%;
+  margin-left: 2%;
+  float: right;
+}
+
+#mensajeSesion{
+  float: right;
+  font-weight: bold;
+  margin-right: 2%;
+}
+
+#botonera{
+  float: right;
+  font-weight: bold;
+  margin-right: 2%;
+  clear: both;
+}
+button
+{
+  background-color: black;
+}
 label
 {
   color: yellow
@@ -268,7 +301,7 @@ h2.bnr-sub-title {
 
 .btn-more:hover {
   background: yellow;
-  color: #fff;
+  color: black;
 }
 
 .overlay-detail a i {
