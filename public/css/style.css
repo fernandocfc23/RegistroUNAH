@@ -10,6 +10,8 @@ body {
   background-image:"../img/port05.jpg";
 }
 
+select option{color: black;}
+
 #matriculaColumna{
   width: 25%;
   margin-right: 2%;

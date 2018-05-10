@@ -19,17 +19,34 @@ var conexion = mysql.createConnection({
 
 app.post("/agregar-alumno", function(peticion, respuesta){
 	conexion.query(
-		"INSERT INTO alumno(numeroCuenta, nombreAlumno, contrasena, idcarrera) "+
-		"VALUES (?,?,?,?)", 
+		"INSERT INTO TBL_PERSONAS(CODIGO_PERSONA, GENERO, CODIGO_TIPO_IDENTIFICACION, CODIGO_CIUDAD, "+
+		"NOMBRE, APELLIDO, FECHA_NACIMIENTO, IDENTIFICACION, DIRECCION, TELEFONO, CORREO_ELECTRONICO) "+
+		"VALUES (null,?,?,?,?,?,sysdate(),?,?,?,?)", 
 		[
-			peticion.body.numeroCuenta,
-			peticion.body.nombreAlumno,
-			peticion.body.contrasenaAlumno,
-			peticion.body.carreraAlumno,
+			peticion.body.genero,
+			peticion.body.tipoIdentificacion,
+			peticion.body.ciudad,
+			peticion.body.nombre,
+			peticion.body.apellido,
+			peticion.body.identificacion,
+			peticion.body.direccion,
+			peticion.body.numeroTelefono,
+			peticion.body.correo,
 		],
-		function(error, resultado){		
-				respuesta.send("Alumno agregado");	
-
+		function(error, resultado){
+			if (resultado.affectedRows==1){
+				conexion.query(
+					"INSERT INTO TBL_ALUMNOS(CODIGO_ALUMNO, NUMERO_CUENTA, CONTRASEÑA, CODIGO_CARRERA)"+
+					"VALUES (?,?,?,?)", 
+					[
+					resultado.insertId,
+					peticion.body.numeroCuenta,
+					peticion.body.contraseñaAlumno,
+					peticion.body.carrera,
+					],
+				);
+			}
+			
 		});
 });
 
@@ -45,6 +62,36 @@ app.get("/historial",function(peticion, respuesta){
 					"(A.CODIGO_ALUMNO=?)", 
 					[
 						peticion.cookies.codigoAlumno,
+					],
+					function(err, informacion, campos){
+						if (err) throw err;
+						respuesta.send(informacion);
+	});
+});
+
+app.post("/cargar-ciudades",function(peticion, respuesta){
+	conexion.query("SELECT * FROM TBL_CIUDAD",	
+					[
+					],
+					function(err, informacion, campos){
+						if (err) throw err;
+						respuesta.send(informacion);
+	});
+});
+
+app.post("/cargar-facultades",function(peticion, respuesta){
+	conexion.query("SELECT * FROM TBL_FACULTADES",	
+					[
+					],
+					function(err, informacion, campos){
+						if (err) throw err;
+						respuesta.send(informacion);
+	});
+});
+
+app.post("/cargar-carreras",function(peticion, respuesta){
+	conexion.query("SELECT * FROM TBL_CARRERA WHERE CODIGO_PRINCIPAL=1",	
+					[
 					],
 					function(err, informacion, campos){
 						if (err) throw err;

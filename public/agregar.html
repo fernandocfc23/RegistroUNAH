@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agregar </title>
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,300|Raleway:300,400,900,700italic,700,300,600">
+  <link rel="stylesheet" type="text/css" href="css/jquery.bxslider.css">
+  <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/animate.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/bootstrap-data-time-picker.css">
+  <link rel="icon" type="image/jpg" href="img/Logo-unah.jpg" />
+</head>
+<body>
+  <div class="header">
+    <div class="bg-color">
+      <header id="main-header">
+        <br>
+      <center><h2>Agregar personal</h2></center><br>
+        <div id="datosPersonales">
+          <div class="form-group col-md-6">
+              <label for="nombre">Nombre</label>
+              <input type="text" class="form-control" id="nombre" placeholder="Ingrese los nombres" required>
+          </div>
+          <div class="form-group col-md-6">
+              <label for="exampleInputEmail1">Apellido</label>
+              <input type="text" class="form-control" id="apellido" placeholder="Ingrese los apellidos" required>
+          </div>
+
+          <div class="from-group col-sm-3">
+              <label for="fechaNacimiento">Fecha de Nacimiento</label>
+              <div class="input-group date" id="datetimepicker1">
+                  <input type='text' class="form-control" id="fechaNacimiento" />
+                  <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar">
+                    </span>
+                  </span>
+              </div>
+          </div>
+          <div class="form-group col-md-3">
+              <label for="identificacion">Identificación</label>
+              <input type="text" class="form-control" id="identificacion" placeholder="Ingrese la identificación" required>
+          </div>
+
+          <div class="form-group col-md-2 ">
+            <label for="tipoIdentificacion">Tipo de identificacion</label>
+            <select id="tipoIdentificacion" class="form-control">
+              <option selected>Seleccionar...</option>
+              <option value="1">Identidad</option>
+              <option value="2">Pasaporte</option>
+            </select> 
+          </div>
+          <div class="form-group col-md-2 ">
+            <label for="genero">Género</label>
+            <select id="genero" class="form-control">
+              <option selected>Seleccionar...</option>
+              <option value="2">Femenino</option>
+              <option value="1">Masculino</option>
+            </select> 
+          </div>
+
+          <div class="form-group col-md-2" id="ciudades"></div>
+
+          <div class="form-group col-md-4">
+              <label for="correo">Correo</label>
+              <input type="email" class="form-control" id="correo" placeholder="Ingrese el correo" required>
+          </div>
+
+          <div class="form-group col-md-4">
+              <label for="direccion">Dirección</label>
+              <input type="text" class="form-control" id="direccion" placeholder="Ingrese la direccion" required>
+          </div>
+          <div class="form-group col-md-4">
+              <label for="numeroTelefono">Número de teléfono</label>
+              <input type="text" class="form-control" id="numeroTelefono" placeholder="Ingrese el número de teléfono" required>
+          </div><br>br
+          <center><button id="btnMostrarA" class="btn btn-primary">Agregar como alumno</button>
+          <button id="btnMostrarE" class="btn btn-primary">Agregar como empleado</button></center><br><br>
+
+        </div>  
+
+        <div id="empleado" style="display:none">
+          <div class="form-group col-md-6">
+              <label for="numeroEmpleado">Número de empleado</label>
+              <input type="text" class="form-control" id="numeroEmpleado" placeholder="Ingrese el número de empleado" required>
+          </div>
+          <div class="form-group col-md-6">
+              <label for="contraseña">Contraseña</label>
+              <input type="password" class="form-control" id="contraseñaEmpleado" placeholder="Ingrese la contraseña" required>
+          </div>
+          <div class="form-group col-md-4">
+            <label for="tipoEmpleado">Tipo de empleado</label>
+            <select id="tipoEmpleado" class="form-control">
+              <option selected>Seleccionar...</option>
+              <option value="1">Docente</option>
+              <option value="2">Jefe de carrera</option>
+              <option value="3">Administrador</option>
+            </select> 
+          </div>
+          <div class="form-group col-md-4" id="facultades"></div>
+          <div class="form-group col-md-4">
+              <label for="exampleInputEmail1">Sueldo base</label>
+              <input type="password" class="form-control" id="sueldoBase" name="sueldoBase" placeholder="Ingrese el sueldo base" required>
+          </div>
+          <center><button id="btnAgregarE" class="btn btn-primary">Agregar empleado</button></center>
+        </div>
+
+        <div id="estudiante" style="display:none"> 
+          <div class="form-group col-md-4">
+              <label for="exampleInputEmail1">Número de cuenta</label>
+              <input type="text" class="form-control" id="numeroCuenta" placeholder="Ingrese su número de cuenta" required>
+          </div>
+          <div class="form-group col-md-4">
+              <label for="exampleInputEmail1">Contraseña</label>
+              <input type="password" class="form-control" id="contraseñaAlumno"  placeholder="Ingrese su contraseña" required>
+          </div>
+          <div class="form-group col-md-4" id="carreras"></div><br>
+          <center><button id="btnAgregarA" class="btn btn-primary">Agregar estudiante</button></center>
+        </div> 
+
+      </header> 
+    </div> 
+  </div>
+</body>
+<script src="js/jquery.min.js"></script> 
+<script src="js/moment.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-data-time-picker.js"></script>
+<script src="js/controlador.js"></script>
+    <script type="text/javascript">
+        $(function () {
+              $('#datetimepicker1').datetimepicker();
+        });
+    </script>
+
+</html>
