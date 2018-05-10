@@ -74,7 +74,7 @@ $("#btnAgregarA").click(function () {
 		method:"POST",
 		data:parametros,
 		success:function(respuesta){
-			alert("Persona agregada");
+			alert("Persona agregada exitosamente");
 			location.href="../agregar.html";
 		}	
 	});		

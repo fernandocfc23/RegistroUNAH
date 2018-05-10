@@ -44,6 +44,10 @@ app.post("/agregar-alumno", function(peticion, respuesta){
 					peticion.body.contraseñaAlumno,
 					peticion.body.carrera,
 					],
+					function(errorSelect, informacion, campos){
+						if (errorSelect) throw errorSelect;
+						respuesta.send(informacion);		
+					}
 				);
 			}
 			
