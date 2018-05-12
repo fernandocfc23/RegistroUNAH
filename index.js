@@ -33,8 +33,15 @@ app.use(
     }
 );
 
-function verificarAutenticacion(peticion, respuesta, next){
+function verificarAutenticacionAdmin(peticion, respuesta, next){
 	if(peticion.cookies.codigoTipoEmpleado==3)
+		return next();
+	else
+	    respuesta.send("<center><h2>Para ingresar a esta página debes iniciar sesión</h2><br><img src='img/error.jpg'></center>");
+}
+
+function verificarAutenticacion(peticion, respuesta, next){
+	if(peticion.cookies.codigoAlumno)
 		return next();
 	else
 	    respuesta.send("<center><h2>Para ingresar a esta página debes iniciar sesión</h2><br><img src='img/error.jpg'></center>");
@@ -275,8 +282,8 @@ app.post("/logout", function(peticion, respuesta){
 app.get("/historial.html", verificarAutenticacion,  function(peticion, respuesta){});
 app.get("/matricula.html", verificarAutenticacion,  function(peticion, respuesta){});
 app.get("/pregrado.html", verificarAutenticacion,  function(peticion, respuesta){});
-app.get("/agregar.html", verificarAutenticacion,  function(peticion, respuesta){});
-app.get("/paneladmin.html", verificarAutenticacion,  function(peticion, respuesta){});
-app.get("/asignaturas.html", verificarAutenticacion,  function(peticion, respuesta){});
+app.get("/agregar.html", verificarAutenticacionAdmin,  function(peticion, respuesta){});
+app.get("/paneladmin.html", verificarAutenticacionAdmin,  function(peticion, respuesta){});
+app.get("/asignaturas.html", verificarAutenticacionAdmin,  function(peticion, respuesta){});
 
 app.listen(3000);
