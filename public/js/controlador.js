@@ -1,4 +1,6 @@
 $(document).ready(function(){
+	$('#datetimepicker1').datetimepicker();
+	$('#datetimepicker2').datetimepicker();
 	cargarCiudad();
 	cargarCarrera();
 });
@@ -6,7 +8,6 @@ $(document).ready(function(){
 $("#btnMostrarA").click(function () {
 	$("#estudiante").fadeIn(100);
 	$("#empleado").hide();
-	cargarCarrera();
 })
 
 $("#btnMostrarE").click(function () {
@@ -60,6 +61,90 @@ function cargarCiudad(){
 	});
 }
 
+function cargarRequisitos(){
+	var a="";
+	$("select option:selected").each(function() {
+		a = $(this).val();
+    });
+    var parametros = "codigoCarrera="+a;
+    $.ajax({
+		url:"/cargar-asignaturas",
+		method:"POST",
+		data:parametros,
+		success:function(respuesta){
+			var contenido="<label for='requisito'>Requisito</label><select id='requisito' class='form-control'>";
+            contenido= contenido +"<option value='0'>NINGUNO</option>"
+			for (var i = 0; i < respuesta.length; i++) {
+             	contenido= contenido +"<option value='"+respuesta[i].CODIGO_ASIGNATURA +"'>"+respuesta[i].NOMBRE_ASIGNATURA +"</option>"
+			};
+			contenido = contenido + "</select>";
+			$("#requisitos").html(contenido);
+		}
+	});
+
+}
+
+function cargarAsignaturas(){
+	var a="";
+	$("select option:selected").each(function() {
+		a = $(this).val();
+    });
+    var parametros = "codigoCarrera="+a;
+    $.ajax({
+		url:"/cargar-asignaturas",
+		method:"POST",
+		data:parametros,
+		success:function(respuesta){
+			var contenido="<label for='asignatura'>Asignatura</label><select id='asignatura' class='form-control'><option selected>Seleccionar...</option>";
+			for (var i = 0; i < respuesta.length; i++) {
+             	contenido= contenido +"<option value='"+respuesta[i].CODIGO_ASIGNATURA +"'>"+respuesta[i].NOMBRE_ASIGNATURA +"</option>"
+			};
+			contenido = contenido + "</select>";
+			$("#asignaturas").html(contenido);
+			cargarAula();
+		}
+	});
+
+}
+
+function cargarDocentes(){
+	var a="";
+	$("select option:selected").each(function() {
+		a = $(this).val();
+    });
+    var parametros = "codigoCarrera="+a;
+    $.ajax({
+		url:"/cargar-docentes",
+		method:"POST",
+		data:parametros,
+		success:function(respuesta){
+			var contenido="<label for='asignatura'>Docente</label><select id='docente' class='form-control'><option selected>Seleccionar...</option>";
+			for (var i = 0; i < respuesta.length; i++) {
+             	contenido= contenido +"<option value='"+respuesta[i].CODIGO_EMPLEADO +"'>"+respuesta[i].NOMBRE +" "+respuesta[i].APELLIDO+"</option>"
+			};
+			contenido = contenido + "</select>";
+			$("#docentes").html(contenido);
+		}
+	});
+
+}
+
+function cargarAula(){
+	$.ajax({
+		url:"/cargar-aulas",
+		method:"POST",
+		success:function(respuesta){
+			var contenido="<label for='aula'>Aula</label><select id='aula' class='form-control'><option selected>Seleccionar...</option>";
+			for (var i = 0; i < respuesta.length; i++) {
+             	contenido= contenido +"<option value='"+respuesta[i].CODIGO_AULA +"'>"+respuesta[i].ALIAS_EDIFICIO+"-"+respuesta[i].NUMERO_AULA +"</option>"
+			};
+			contenido = contenido + "</select>";
+			$("#aulas").html(contenido);
+		}
+	});
+}
+
+
 $("#tipoEmpleado").change(function () {
     $("select option:selected").each(function() {
       var tipoEmp= $(this).text();
@@ -75,24 +160,11 @@ $("#tipoEmpleado").change(function () {
 });
 
 $("#carreras").change(function () {
-	$("select option:selected").each(function() {
-		a = $(this).val();
-    });
-    var parametros = "codigoCarrera="+a;
-    $.ajax({
-		url:"/cargar-requisitos",
-		method:"POST",
-		data:parametros,
-		success:function(respuesta){
-			var contenido="<label for='requisito'>Requisito</label><select id='requisito' class='form-control'><option selected>Seleccionar...</option>";
-            contenido= contenido +"<option value='0'>NINGUNO</option>"
-			for (var i = 0; i < respuesta.length; i++) {
-             	contenido= contenido +"<option value='"+respuesta[i].CODIGO_ASIGNATURA +"'>"+respuesta[i].NOMBRE_ASIGNATURA +"</option>"
-			};
-			contenido = contenido + "</select>";
-			$("#requisitos").html(contenido);
-		}
-	});
+	$("#div1").fadeIn(100);
+	$("#div2").fadeIn(100);
+	cargarRequisitos();
+	cargarAsignaturas();
+	cargarDocentes();
 });
 
 $("#tipoEmpleado").change(function () {
@@ -107,7 +179,6 @@ $("#tipoEmpleado").change(function () {
       	$("#facultad").prop( "disabled", false );
       }
     });
-    alert($(this).val());
 });
 
 
@@ -164,6 +235,7 @@ $("#btnAgregarE").click(function () {
 		}	
 	});		
 });
+
 
 $("#btnIngresarA").click(function(){	
 	var parametros =
@@ -236,4 +308,41 @@ $("#btnAgregarAsignatura").click(function(){
 		}
 	});
 
+});
+
+$("#btnAgregarPeriodo").click(function(){	
+	var parametros =
+	"nombrePeriodo=" +$("#nombrePeriodo").val()+ "&"+
+	"fechaInicio=" +$("#fechaInicio").val()+ "&"+
+	"fechaFin=" +$("#fechaFin").val();
+		$.ajax({
+		url:"/agregar-periodo",
+		method:"POST",
+		data:parametros,
+		success:function(respuesta){
+			alert("Período agregado exitosamente");
+			location.href="../periodo.html";
+		}
+	});
+
+});
+
+$("#btnAgregarSeccion").click(function () {
+	var parametros =
+	"carrera=" +$("#carreras").val()+ "&"+
+	"asignatura=" +$("#asignatura").val()+ "&"+
+	"docente=" +$("#docente").val()+ "&"+
+	"horaInicio=" +$("#horaInicio").val()+ "&"+
+	"horaFin=" +$("#horaFin").val()+ "&"+
+	"aula=" +$("#aula").val()+ "&"+
+	"cantidadCupos=" +$("#cantidadCupos").val();
+	$.ajax({
+		url:"/agregar-seccion",
+		method:"POST",
+		data:parametros,
+		success:function(respuesta){
+			alert("Sección agregada exitosamente");
+			location.href="../secciones.html";
+		}	
+	});		
 });

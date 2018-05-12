@@ -22,9 +22,11 @@ var publicAlumno = express.static("public-alumno");
 
 app.use(
     function(peticion,respuesta,next){
-        if (peticion.cookies.codigoTipoEmpleado==3){
-            publicAdmin(peticion,respuesta,next);
-        }
+    	if(peticion.cookies.codigoTipoEmpleado){
+		    if (peticion.cookies.codigoTipoEmpleado==3){
+		            publicAdmin(peticion,respuesta,next);
+		    }
+    	}
         else if (peticion.cookies.codigoAlumno){
             publicAlumno(peticion,respuesta,next);
         }
@@ -154,6 +156,53 @@ app.post("/agregar-asignatura", function(peticion, respuesta){
 		});
 });
 
+app.post("/agregar-periodo", function(peticion, respuesta){
+	conexion.query(
+		"INSERT INTO TBL_PERIODOS(CODIGO_PERIODO, NOMBRE_PERIODO, FECHA_INICIO, FECHA_FIN, ACTIVO) "+
+		"VALUES (null,?,?,?,?)", 
+		[
+			peticion.body.nombrePeriodo,
+			peticion.body.fechaInicio,
+			peticion.body.fechaFin,
+			"1",
+		],
+		function(error, resultado){
+			if (resultado.affectedRows==1){
+				conexion.query(
+					"UPDATE TBL_PERIODOS SET ACTIVO = 0 WHERE (CODIGO_PERIODO!= ?);", 
+					[
+					resultado.insertId,
+					],
+					function(errorSelect, informacion, campos){
+						respuesta.send(informacion);		
+					}
+				);
+			}
+			
+		});
+});
+
+app.post("/agregar-seccion", function(peticion, respuesta){
+			conexion.query(
+				"INSERT INTO TBL_SECCION(CODIGO_SECCION, CODIGO_PERIODO, CODIGO_ASIGNATURA, HORA_INICIO, "+
+				 "HORA_FIN, CANTIDAD_CUPOS, CODIGO_AULA, CODIGO_EMPLEADO) "+
+				"VALUES (null,?,?,?,?,?,?,?)", 
+					[
+						"4",
+						peticion.body.asignatura,
+						peticion.body.horaInicio,
+						peticion.body.horaFin,
+						peticion.body.cantidadCupos,
+						peticion.body.aula, 
+						peticion.body.docente,
+					],
+					function(errorSelect, informacion, campos){
+						if(errorSelect) throw errorSelect;
+						respuesta.send(informacion);		
+					}
+				);
+});
+
 app.get("/historial",function(peticion, respuesta){
 	conexion.query("SELECT B.CODIGO_ASIGNATURA, B.NOMBRE_ASIGNATURA, B.CANTIDAD_UNIDADES_VALORATIVAS,"+ 
 					"C.HORA_INICIO, E.NOMBRE_PERIODO, D.PROMEDIO "+
@@ -202,11 +251,34 @@ app.post("/cargar-carreras",function(peticion, respuesta){
 	});
 });
 
-app.post("/cargar-requisitos",function(peticion, respuesta){
+app.post("/cargar-asignaturas",function(peticion, respuesta){
 	conexion.query("SELECT * FROM TBL_ASIGNATURAS WHERE CODIGO_CARRERA=?",	
 					[
 						peticion.body.codigoCarrera,
 					],
+					function(err, informacion, campos){
+						if (err) throw err;
+						respuesta.send(informacion);
+	});
+});
+
+app.post("/cargar-docentes",function(peticion, respuesta){
+	conexion.query("SELECT A.CODIGO_EMPLEADO, B.NOMBRE,B.APELLIDO FROM TBL_EMPLEADOS A, TBL_PERSONAS B, TBL_CARRERA C, TBL_FACULTADES D "+
+					"WHERE A.CODIGO_EMPLEADO=B.CODIGO_PERSONA AND A.CODIGO_FACULTAD=D.CODIGO_FACULTAD AND "+
+					"C.CODIGO_FACULTAD=D.CODIGO_FACULTAD AND CODIGO_CARRERA=?",	
+					[
+						peticion.body.codigoCarrera,
+					],
+					function(err, informacion, campos){
+						if (err) throw err;
+						respuesta.send(informacion);
+	});
+});
+
+app.post("/cargar-aulas",function(peticion, respuesta){
+	conexion.query("SELECT A.CODIGO_AULA, A.NUMERO_AULA, B.ALIAS_EDIFICIO FROM TBL_AULAS A, TBL_EDIFICIOS B " +
+					"WHERE A.CODIGO_EDIFICIO=B.CODIGO_EDIFICIO",	
+					[],
 					function(err, informacion, campos){
 						if (err) throw err;
 						respuesta.send(informacion);
@@ -285,5 +357,8 @@ app.get("/pregrado.html", verificarAutenticacion,  function(peticion, respuesta)
 app.get("/agregar.html", verificarAutenticacionAdmin,  function(peticion, respuesta){});
 app.get("/paneladmin.html", verificarAutenticacionAdmin,  function(peticion, respuesta){});
 app.get("/asignaturas.html", verificarAutenticacionAdmin,  function(peticion, respuesta){});
+app.get("/periodo.html", verificarAutenticacionAdmin,  function(peticion, respuesta){});
+app.get("/secciones.html", verificarAutenticacionAdmin,  function(peticion, respuesta){});
+
 
 app.listen(3000);
