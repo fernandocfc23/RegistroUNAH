@@ -25,7 +25,7 @@ app.use(
         if (peticion.cookies.codigoTipoEmpleado==3){
             publicAdmin(peticion,respuesta,next);
         }
-        if (peticion.cookies.codigoAlumno){
+        else if (peticion.cookies.codigoAlumno){
             publicAlumno(peticion,respuesta,next);
         }
         else
@@ -44,13 +44,14 @@ app.post("/agregar-alumno", function(peticion, respuesta){
 	conexion.query(
 		"INSERT INTO TBL_PERSONAS(CODIGO_PERSONA, GENERO, CODIGO_TIPO_IDENTIFICACION, CODIGO_CIUDAD, "+
 		"NOMBRE, APELLIDO, FECHA_NACIMIENTO, IDENTIFICACION, DIRECCION, TELEFONO, CORREO_ELECTRONICO) "+
-		"VALUES (null,?,?,?,?,?,sysdate(),?,?,?,?)", 
+		"VALUES (null,?,?,?,?,?,?,?,?,?,?)", 
 		[
 			peticion.body.genero,
 			peticion.body.tipoIdentificacion,
 			peticion.body.ciudad,
 			peticion.body.nombre,
 			peticion.body.apellido,
+			peticion.body.fechaNacimiento,
 			peticion.body.identificacion,
 			peticion.body.direccion,
 			peticion.body.numeroTelefono,
@@ -77,6 +78,74 @@ app.post("/agregar-alumno", function(peticion, respuesta){
 		});
 });
 
+app.post("/agregar-empleado", function(peticion, respuesta){
+	conexion.query(
+		"INSERT INTO TBL_PERSONAS(CODIGO_PERSONA, GENERO, CODIGO_TIPO_IDENTIFICACION, CODIGO_CIUDAD, "+
+		"NOMBRE, APELLIDO, FECHA_NACIMIENTO, IDENTIFICACION, DIRECCION, TELEFONO, CORREO_ELECTRONICO) "+
+		"VALUES (null,?,?,?,?,?,?,?,?,?,?)", 
+		[
+			peticion.body.genero,
+			peticion.body.tipoIdentificacion,
+			peticion.body.ciudad,
+			peticion.body.nombre,
+			peticion.body.apellido,
+			peticion.body.fechaNacimiento,
+			peticion.body.identificacion,
+			peticion.body.direccion,
+			peticion.body.numeroTelefono,
+			peticion.body.correo,
+		],
+		function(error, resultado){
+			if (resultado.affectedRows==1){
+				conexion.query(
+					"INSERT INTO TBL_EMPLEADOS(CODIGO_EMPLEADO, CODIGO_TIPO_EMPLEADO, NUMERO_EMPLEADO, CONTRASEÑA, SUELDO_BASE, CODIGO_FACULTAD)"+
+					"VALUES (?,?,?,?,?,?)", 
+					[
+					resultado.insertId,
+					peticion.body.tipoEmpleado,
+					peticion.body.numeroEmpleado,
+					peticion.body.contraseñaEmpleado,
+					peticion.body.sueldoBase,
+					peticion.body.facultad,
+					],
+					function(errorSelect, informacion, campos){
+						if (errorSelect) throw errorSelect;
+						respuesta.send(informacion);		
+					}
+				);
+			}
+			
+		});
+});
+
+app.post("/agregar-asignatura", function(peticion, respuesta){
+	conexion.query(
+		"INSERT INTO TBL_ASIGNATURAS(CODIGO_ASIGNATURA, CODIGO_CARRERA, NOMBRE_ASIGNATURA, CANTIDAD_UNIDADES_VALORATIVAS, DIAS) "+
+		"VALUES (null,?,?,?,?)", 
+		[
+			peticion.body.carrera,
+			peticion.body.nombreAsignatura,
+			peticion.body.cantidadUV,
+			peticion.body.dias,
+		],
+		function(error, resultado){
+			if (resultado.affectedRows==1 && peticion.body.requisito >0){
+				conexion.query(
+					"INSERT INTO TBL_REQUISITOS(CODIGO_ASIGNATURA, CODIGO_ASIGNATURA_REQUISITO, CODIGO_CARRERA)"+
+					"VALUES (?,?,?)", 
+					[
+					resultado.insertId,
+					peticion.body.requisito,
+					peticion.body.carrera,
+					],
+					function(errorSelect, informacion, campos){
+						respuesta.send(informacion);		
+					}
+				);
+			}
+			
+		});
+});
 
 app.get("/historial",function(peticion, respuesta){
 	conexion.query("SELECT B.CODIGO_ASIGNATURA, B.NOMBRE_ASIGNATURA, B.CANTIDAD_UNIDADES_VALORATIVAS,"+ 
@@ -107,7 +176,7 @@ app.post("/cargar-ciudades",function(peticion, respuesta){
 });
 
 app.post("/cargar-facultades",function(peticion, respuesta){
-	conexion.query("SELECT * FROM TBL_FACULTADES",	
+	conexion.query("SELECT * FROM TBL_FACULTADES WHERE CODIGO_FACULTAD > 0",	
 					[
 					],
 					function(err, informacion, campos){
@@ -119,6 +188,17 @@ app.post("/cargar-facultades",function(peticion, respuesta){
 app.post("/cargar-carreras",function(peticion, respuesta){
 	conexion.query("SELECT * FROM TBL_CARRERA WHERE CODIGO_PRINCIPAL=1",	
 					[
+					],
+					function(err, informacion, campos){
+						if (err) throw err;
+						respuesta.send(informacion);
+	});
+});
+
+app.post("/cargar-requisitos",function(peticion, respuesta){
+	conexion.query("SELECT * FROM TBL_ASIGNATURAS WHERE CODIGO_CARRERA=?",	
+					[
+						peticion.body.codigoCarrera,
 					],
 					function(err, informacion, campos){
 						if (err) throw err;
@@ -196,5 +276,7 @@ app.get("/historial.html", verificarAutenticacion,  function(peticion, respuesta
 app.get("/matricula.html", verificarAutenticacion,  function(peticion, respuesta){});
 app.get("/pregrado.html", verificarAutenticacion,  function(peticion, respuesta){});
 app.get("/agregar.html", verificarAutenticacion,  function(peticion, respuesta){});
+app.get("/paneladmin.html", verificarAutenticacion,  function(peticion, respuesta){});
+app.get("/asignaturas.html", verificarAutenticacion,  function(peticion, respuesta){});
 
 app.listen(3000);

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agregar </title>
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,300|Raleway:300,400,900,700italic,700,300,600">
+  <link rel="stylesheet" type="text/css" href="css/jquery.bxslider.css">
+  <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="css/animate.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/bootstrap-data-time-picker.css">
+  <link rel="icon" type="image/jpg" href="img/Logo-unah.jpg" />
+</head>
+<body>
+  <div class="header">
+    <div class="bg-color">
+      <header id="main-header">                <a class="navbar-brand" href="#">UN<span class="logo-dec">AH</span></a>
+
+        <br>
+          <div class="row">   
+            <h2>Agregar asignatura</h2><br>
+            <div class="form-group col-md-5">
+              <label for="nombreAsignatura">Nombre de la asignatura</label>
+              <input type="text" class="form-control" id="nombreAsignatura" placeholder="Ingrese el nombre" required>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-md-2">
+              <label for="cantidadUV">Unidades valorativas</label>
+              <input type="number" class="form-control" id="cantidadUV" required>
+            </div>
+            <div class="form-group col-md-3 ">
+                <label for="dias">Días</label>
+                <select id="dias" class="form-control">
+                  <option selected>Seleccionar...</option>
+                  <option value="Lunes-viernes">Lunes-viernes</option>
+                  <option value="Lunes-jueves">Lunes-jueves</option>
+                  <option value="Lunes-miércoles">Lunes-miércoles</option>
+                  <option value="Lunes|miércoles|viernes">Lunes|miércoles|viernes</option>
+                  <option value="Sábado">Sábado</option>
+                </select> 
+              </div>
+          </div>
+
+        <div class="row">
+          <div class="form-group col-md-5" id="carreras"></div>
+        </div> 
+
+        <div class="row">
+          <div class="form-group col-md-5" id="requisitos"></div>
+        </div> 
+
+        <div class="row">          
+          <a href="paneladmin.html"><button type="button" class="btn btn-primary">Regresar al menú principal</button></a>
+          <button id="btnAgregarAsignatura" class="btn btn-primary row">Agregar asignatura</button>
+        </div> 
+      </header> 
+    </div> 
+  </div>
+
+</body>
+
+<script src="js/jquery.min.js"></script> 
+<script src="js/moment.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-data-time-picker.js"></script>
+<script src="js/controlador.js"></script>
+
+</html>

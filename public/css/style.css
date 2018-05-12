@@ -10,8 +10,10 @@ body {
   background-image:"../img/port05.jpg";
 }
 
+h2{color:yellow;}
 select option{color: black;}
-
+select disabled{color:black;}
+.row{margin: 2%;}
 #matriculaColumna{
   width: 25%;
   margin-right: 2%;
@@ -44,6 +46,7 @@ select option{color: black;}
 button
 {
   background-color: black;
+  border-radius: 15px;
 }
 label
 {

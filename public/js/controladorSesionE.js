@@ -9,7 +9,7 @@ $(document).ready(function(){
 			else(respuesta.length==1)	
 			{
 				var contenido;
-				contenido="Docente: "+respuesta[0].NOMBRE+ " " +respuesta[0].APELLIDO +
+				contenido="Empleado: "+respuesta[0].NOMBRE+ " " +respuesta[0].APELLIDO +
 				" <br>Número de empleado: "+respuesta[0].NUMERO_EMPLEADO;
 				$("#mensajeSesion").append(contenido);
 			}
