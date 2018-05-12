@@ -17,6 +17,29 @@ var conexion = mysql.createConnection({
 	database:"DB_UNAH"
 });
 
+var publicAdmin = express.static("public-admin");
+var publicAlumno = express.static("public-alumno");
+
+app.use(
+    function(peticion,respuesta,next){
+        if (peticion.cookies.codigoTipoEmpleado==3){
+            publicAdmin(peticion,respuesta,next);
+        }
+        if (peticion.cookies.codigoAlumno){
+            publicAlumno(peticion,respuesta,next);
+        }
+        else
+            return next();
+    }
+);
+
+function verificarAutenticacion(peticion, respuesta, next){
+	if(peticion.cookies.codigoTipoEmpleado==3)
+		return next();
+	else
+	    respuesta.send("<center><h2>Para ingresar a esta página debes iniciar sesión</h2><br><img src='img/error.jpg'></center>");
+}
+
 app.post("/agregar-alumno", function(peticion, respuesta){
 	conexion.query(
 		"INSERT INTO TBL_PERSONAS(CODIGO_PERSONA, GENERO, CODIGO_TIPO_IDENTIFICACION, CODIGO_CIUDAD, "+
@@ -132,6 +155,7 @@ app.post("/comprobar-empleado",function(peticion, respuesta){
 				if (err) throw err;
 				if(filas.length == 1)
 					respuesta.cookie("codigoEmpleado",filas[0].NUMERO_EMPLEADO,{ maxAge: 900000, httpOnly: true });
+					respuesta.cookie("codigoTipoEmpleado",filas[0].CODIGO_TIPO_EMPLEADO,{ maxAge: 900000, httpOnly: true });
 				respuesta.send(filas);
 			}
 	);
@@ -164,7 +188,13 @@ app.post("/cargar-num",function(peticion, respuesta){
 
 app.post("/logout", function(peticion, respuesta){
 		respuesta.clearCookie("codigoAlumno");
+		respuesta.clearCookie("codigoTipoEmpleado");
 		respuesta.redirect('index.html');
 });
+
+app.get("/historial.html", verificarAutenticacion,  function(peticion, respuesta){});
+app.get("/matricula.html", verificarAutenticacion,  function(peticion, respuesta){});
+app.get("/pregrado.html", verificarAutenticacion,  function(peticion, respuesta){});
+app.get("/agregar.html", verificarAutenticacion,  function(peticion, respuesta){});
 
 app.listen(3000);

@@ -125,3 +125,26 @@ $("#btnIngresarE").click(function(){
 
 });
 
+
+$("#btnIngresarAdmin").click(function(){	
+	var parametros =
+	"numeroEmpleado=" +$("#numeroAdministrador").val()+ "&"+
+	"contrasena=" +$("#contraseñaAdministrador").val();
+	$.ajax({
+		url:"/comprobar-empleado",
+		method:"POST",
+		data:parametros,
+		success:function(respuesta){
+			if(respuesta.length==1 && respuesta[0].CODIGO_TIPO_EMPLEADO==3)	
+			{
+		    	window.location.href = "paneladmin.html";
+			}
+			else
+			{
+				var contenido;
+				contenido="<span>error</span>"
+				$("#mensaje").append(contenido);
+			}
+		}
+	});	
+});
