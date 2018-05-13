@@ -101,10 +101,8 @@ function cargarAsignaturas(){
 			};
 			contenido = contenido + "</select>";
 			$("#asignaturas").html(contenido);
-			cargarAula();
 		}
 	});
-
 }
 
 function cargarDocentes(){
@@ -126,6 +124,7 @@ function cargarDocentes(){
 			$("#docentes").html(contenido);
 		}
 	});
+	cargarAula();
 
 }
 

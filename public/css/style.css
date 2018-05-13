@@ -15,17 +15,13 @@ select option{color: black;}
 select disabled{color:black;}
 .row{margin: 2%;}
 #matriculaColumna{
-  width: 25%;
+  width: 40%;
   margin-right: 2%;
   margin-left: 2%;
   float: left;
 }
 #matriculaColumna2{
-  width: 25%;
-  margin: auto;
-}
-#matriculaColumna3{
-  width: 25%;
+  width: 40%;
   margin-right: 2%;
   margin-left: 2%;
   float: right;

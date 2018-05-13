@@ -1,28 +1,63 @@
 <html>
 <head>
-  <link rel="icon" type="image/jpg" href="img/Logo-unah.jpg" />
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:400,300|Raleway:300,400,900,700italic,700,300,600">
   <link rel="stylesheet" type="text/css" href="css/jquery.bxslider.css">
   <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
   <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="css/animate.css">
   <link rel="stylesheet" type="text/css" href="css/style.css">
-  <link rel="stylesheet" type="text/css" href="css/style2.css">
+  <link rel="stylesheet" type="text/css" href="css/bootstrap-data-time-picker.css">
   <link rel="stylesheet" type="text/css" href="DataTable/datatables.min.css"/>
+  <link rel="icon" type="image/jpg" href="img/Logo-unah.jpg" />
 	<title>Matrícula</title>
 	<meta charset="UTF-8">
 </head>
 <body>
-  <div id="botonera">
-    <a href="pregrado.html"><button type="button" class="btn btn-primary">Regresar al menú principal</button></a>
-    <button id="btnSalir" class="btn btn-primary">Cerrar sesión</button>
-</div>    <br><br>
+  <style type="text/css">
+    label, th{
+      color:black;
+    }
+    h1{color:yellow;}
+  </style>
+          <div class="header">
+        <div class="bg-color">
+          <header id="main-header">
+        <a class="navbar-brand" href="#">UN<span class="logo-dec">AH</span></a><br><br>
 
-<hr/>
-	<center><h2>Matrícula</h2></center>  
-  <section id="matriculaColumna">Hola</section>
-  <section id="matriculaColumna2">Hola2</section>
-  <section id="matriculaColumna3">Hola3</section>
+        <center><h2>Matrícula</h2></center>  
+        <section id="matriculaColumna">
+                  <h2>Adicionar clases</h2><br>
+                  <div class="row">
+                    <div class="form-group col-md-5" id="asignaturas"></div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col-md-5" id="secciones"></div>
+                  </div>
+                  <div class="row">
+                    <button id="btnMatricular" class="btn btn-primary">Matricular</button>
+                  </div>
+        </section>
+        <section id="matriculaColumna2">
+                  <h2>Clases matriculadas</h2><br>
+                  <button id="btnFormaVer" class="btn btn-primary">Ver clases matriculadas</button><br><br>
+                  <div id="forma003" style="display:none">
+                    <table id="tablaForma" class="display" style="width:100%">
+                      <thead>
+                          <tr>
+                              <th>Nombre clase</th>
+                              <th>Hora inicio</th>
+                              <th>Hora fin</th>
+                              <th>Edificio</th>
+                              <th>Aula</th>
+                          </tr>
+                      </thead>
+                    </table>
+                  </div>
+        </section>
+        </div>
+        </div>
+        </header>
+
 </body>
 <script src="js/jquery.min.js"></script> 
 <script type="text/javascript" src="DataTable/datatables.min.js"></script>

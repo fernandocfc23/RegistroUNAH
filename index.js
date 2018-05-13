@@ -183,12 +183,17 @@ app.post("/agregar-periodo", function(peticion, respuesta){
 });
 
 app.post("/agregar-seccion", function(peticion, respuesta){
+		conexion.query(
+		"SELECT CODIGO_PERIODO FROM TBL_PERIODOS WHERE ACTIVO=1", 
+		[],
+		function(error, resultado){
+			if (resultado.length==1){
 			conexion.query(
 				"INSERT INTO TBL_SECCION(CODIGO_SECCION, CODIGO_PERIODO, CODIGO_ASIGNATURA, HORA_INICIO, "+
 				 "HORA_FIN, CANTIDAD_CUPOS, CODIGO_AULA, CODIGO_EMPLEADO) "+
 				"VALUES (null,?,?,?,?,?,?,?)", 
 					[
-						"4",
+						resultado[0].CODIGO_PERIODO,
 						peticion.body.asignatura,
 						peticion.body.horaInicio,
 						peticion.body.horaFin,
@@ -201,6 +206,9 @@ app.post("/agregar-seccion", function(peticion, respuesta){
 						respuesta.send(informacion);		
 					}
 				);
+			}
+			
+		});
 });
 
 app.get("/historial",function(peticion, respuesta){
@@ -212,6 +220,20 @@ app.get("/historial",function(peticion, respuesta){
 					"C.CODIGO_SECCION=D.CODIGO_SECCION AND "+
 					"C.CODIGO_PERIODO=E.CODIGO_PERIODO AND "+
 					"(A.CODIGO_ALUMNO=?)", 
+					[
+						peticion.cookies.codigoAlumno,
+					],
+					function(err, informacion, campos){
+						if (err) throw err;
+						respuesta.send(informacion);
+	});
+});
+
+app.get("/forma",function(peticion, respuesta){
+	conexion.query("SELECT E.NOMBRE_ASIGNATURA, A.HORA_INICIO, A.HORA_FIN, C.ALIAS_EDIFICIO, D.NUMERO_AULA " +
+					"FROM TBL_SECCION A, TBL_MATRICULA B, TBL_EDIFICIOS C, TBL_AULAS D, TBL_ASIGNATURAS E, TBL_ALUMNOS F "+
+					"WHERE E.CODIGO_ASIGNATURA=A.CODIGO_ASIGNATURA AND B.CODIGO_SECCION=A.CODIGO_SECCION AND "+
+					"A.CODIGO_AULA=D.CODIGO_AULA AND D.CODIGO_EDIFICIO=C.CODIGO_EDIFICIO AND B.CODIGO_ALUMNO=F.CODIGO_ALUMNO AND F.CODIGO_ALUMNO=? ", 
 					[
 						peticion.cookies.codigoAlumno,
 					],
@@ -285,6 +307,17 @@ app.post("/cargar-aulas",function(peticion, respuesta){
 	});
 });
 
+app.post("/cargar-secciones",function(peticion, respuesta){
+	conexion.query("SELECT * FROM TBL_SECCION WHERE CODIGO_ASIGNATURA=?",	
+					[
+						peticion.body.codigoAsignatura,
+					],
+					function(err, informacion, campos){
+						if (err) throw err;
+						respuesta.send(informacion);
+	});
+});
+
 app.post("/comprobar-alumno",function(peticion, respuesta){
 	conexion.query(
 			"SELECT * FROM TBL_ALUMNOS "+
@@ -344,6 +377,21 @@ app.post("/cargar-num",function(peticion, respuesta){
 		}
 	);
 });
+
+app.post("/matricular-clase", function(peticion, respuesta){
+			conexion.query(
+				"INSERT INTO TBL_MATRICULA(CODIGO_ALUMNO, CODIGO_SECCION, FECHA_MATRICULA) "+
+				"VALUES (?,?,sysdate())", 
+					[
+						peticion.cookies.codigoAlumno,
+						peticion.body.codigoSeccion,
+					],
+					function(errorSelect, informacion, campos){
+						if(errorSelect) throw errorSelect;
+						respuesta.send(informacion);		
+					}
+				);
+			});
 
 app.post("/logout", function(peticion, respuesta){
 		respuesta.clearCookie("codigoAlumno");
